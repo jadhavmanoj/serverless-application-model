@@ -1,4 +1,11 @@
 Resources:
+  MyApiWithAwsIamAuthNoCallerCredentials:
+    Type: "AWS::Serverless::Api"
+    Properties:
+      StageName: Prod
+      Auth:
+        DefaultAuthorizer: AWS_IAM
+        InvokeRole: NONE
   MyApiWithAwsIamAuth:
     Type: "AWS::Serverless::Api"
     Properties:
@@ -14,7 +21,7 @@ Resources:
     Properties:
       CodeUri: s3://bucket/key
       Handler: index.handler
-      Runtime: nodejs8.10
+      Runtime: nodejs12.x
       Events:
         API1:
           Type: Api
@@ -29,7 +36,7 @@ Resources:
     Properties:
       CodeUri: s3://bucket/key
       Handler: index.handler
-      Runtime: nodejs8.10
+      Runtime: nodejs12.x
       Events:
         API2:
           Type: Api
@@ -42,7 +49,7 @@ Resources:
     Properties:
       CodeUri: s3://bucket/key
       Handler: index.handler
-      Runtime: nodejs8.10
+      Runtime: nodejs12.x
       Events:
         API3:
           Type: Api
@@ -57,7 +64,7 @@ Resources:
     Properties:
       CodeUri: s3://bucket/key
       Handler: index.handler
-      Runtime: nodejs8.10
+      Runtime: nodejs12.x
       Events:
         API3:
           Type: Api
@@ -73,7 +80,7 @@ Resources:
     Properties:
       CodeUri: s3://bucket/key
       Handler: index.handler
-      Runtime: nodejs8.10
+      Runtime: nodejs12.x
       Events:
         API3:
           Type: Api
@@ -84,3 +91,64 @@ Resources:
             Auth:
               Authorizer: AWS_IAM
               InvokeRole: arn:aws:iam::456::role/something-else
+  MyFunctionNONEInvokeRole:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: s3://bucket/key
+      Handler: index.handler
+      Runtime: nodejs12.x
+      Events:
+        API3:
+          Type: Api
+          Properties:
+            RestApiId: !Ref MyApiWithAwsIamAuth
+            Method: get
+            Path: /MyFunctionNONEInvokeRole
+            Auth:
+              Authorizer: AWS_IAM
+              InvokeRole: NONE
+  MyFunctionNullInvokeRole:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: s3://bucket/key
+      Handler: index.handler
+      Runtime: nodejs12.x
+      Events:
+        API3:
+          Type: Api
+          Properties:
+            RestApiId: !Ref MyApiWithAwsIamAuth
+            Method: get
+            Path: /MyFunctionNullInvokeRole
+            Auth:
+              Authorizer: AWS_IAM
+              InvokeRole: null
+  MyFunctionCallerCredentialsOverride:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: s3://bucket/key
+      Handler: index.handler
+      Runtime: nodejs12.x
+      Events:
+        API3:
+          Type: Api
+          Properties:
+            RestApiId: !Ref MyApiWithAwsIamAuthNoCallerCredentials
+            Method: get
+            Path: /
+            Auth:
+              Authorizer: AWS_IAM
+              InvokeRole: CALLER_CREDENTIALS
+  MyFunctionNoCallerCredentials:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: s3://bucket/key
+      Handler: index.handler
+      Runtime: nodejs12.x
+      Events:
+        API3:
+          Type: Api
+          Properties:
+            RestApiId: !Ref MyApiWithAwsIamAuthNoCallerCredentials
+            Method: post
+            Path: /

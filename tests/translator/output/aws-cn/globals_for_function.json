@@ -4,9 +4,24 @@
       "Type": "AWS::IAM::Role", 
       "Properties": {
         "ManagedPolicyArns": [
-          "arn:aws-cn:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole", 
-          "arn:aws-cn:iam::aws:policy/AWSXrayWriteOnlyAccess"
-        ], 
+          "arn:aws-cn:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+          "arn:aws-cn:iam::aws:policy/AWSXrayWriteOnlyAccess",
+          "arn:aws-cn:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole"
+        ],
+        "Tags": [
+          {
+            "Value": "SAM",
+            "Key": "lambda:createdBy"
+          },
+          {
+            "Value": "newvalue1",
+            "Key": "newtag1"
+          },
+          {
+            "Value": "value1",
+            "Key": "tag1"
+          }
+        ],
         "PermissionsBoundary": "arn:aws:1234:iam:boundary/OverridePermissionsBoundary", 
         "AssumeRolePolicyDocument": {
           "Version": "2012-10-17", 
@@ -84,16 +99,27 @@
           ]
         }, 
         "Timeout": 100, 
-        "Runtime": "nodejs4.3"
+        "Runtime": "nodejs12.x"
       }
     }, 
     "MinimalFunctionRole": {
       "Type": "AWS::IAM::Role", 
       "Properties": {
         "ManagedPolicyArns": [
-          "arn:aws-cn:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole", 
-          "arn:aws-cn:iam::aws:policy/AWSXrayWriteOnlyAccess"
-        ], 
+          "arn:aws-cn:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+          "arn:aws-cn:iam::aws:policy/AWSXrayWriteOnlyAccess",
+          "arn:aws-cn:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole"
+        ],
+        "Tags": [
+          {
+            "Value": "SAM",
+            "Key": "lambda:createdBy"
+          },
+          {
+            "Value": "value1",
+            "Key": "tag1"
+          }
+        ],
         "PermissionsBoundary": "arn:aws:1234:iam:boundary/CustomerCreatedPermissionsBoundary", 
         "AssumeRolePolicyDocument": {
           "Version": "2012-10-17", 
@@ -118,7 +144,7 @@
       "Properties": {
         "FunctionVersion": {
           "Fn::GetAtt": [
-            "FunctionWithOverridesVersion640128d35d", 
+            "FunctionWithOverridesVersion096ed3b52b",
             "Version"
           ]
         }, 
@@ -185,7 +211,7 @@
       "Properties": {
         "FunctionVersion": {
           "Fn::GetAtt": [
-            "MinimalFunctionVersionfb7aeaa544", 
+            "MinimalFunctionVersion0a06fc8fb1",
             "Version"
           ]
         }, 
@@ -195,7 +221,7 @@
         "Name": "live"
       }
     }, 
-    "FunctionWithOverridesVersion640128d35d": {
+    "FunctionWithOverridesVersion096ed3b52b": {
       "DeletionPolicy": "Retain", 
       "Type": "AWS::Lambda::Version", 
       "Properties": {
@@ -204,7 +230,7 @@
         }
       }
     }, 
-    "MinimalFunctionVersionfb7aeaa544": {
+    "MinimalFunctionVersion0a06fc8fb1": {
       "DeletionPolicy": "Retain", 
       "Type": "AWS::Lambda::Version", 
       "Properties": {
